@@ -2,7 +2,7 @@ var FTP_BASE = 'http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/';
 var DIR_RE = /<a href="((\d\d\d\d-\d\d-\d\d-\d\d-\d\d-\d\d)-mozilla-central-android-api-11\/)">/g;
 var SPEC_RE = /<a href="(fennec-.*?\.multi\.android-arm\.txt)">/;
 var CHANGESET_RE = /\/rev\/(\w+)/;
-var CHANGES_RE = /<\/th><\/tr>\r?\n([\w\W]*)\r?\n<\/table>/;
+var CHANGES_RE = /<\/th><\/tr>\r?\n([\w\W]+)\r?\n<\/table>/;
 var HG_LOG = 'http://hg.mozilla.org/mozilla-central/pushloghtml';
 var HG_BASE = 'http://hg.mozilla.org';
 var COLLAPSEID_RE = /id(\d+)/;

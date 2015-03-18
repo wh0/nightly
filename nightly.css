@@ -15,3 +15,5 @@ td:last-child{padding-right:16px;font-size:11px;}
 strong{display:block;font-weight:normal;color:#404040;white-space:pre;}
 strong:first-line{font-size:13px;color:#000000;}
 .bug-deco::after{font-size:smaller;content:" " attr(data-product) "/" attr(data-component);}
+.no-changes{padding:4px 16px;}
+.no-changes::before{content:"(no changes)";}
