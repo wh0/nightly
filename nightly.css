@@ -1,0 +1,17 @@
+html{font-size:13px;font-family:sans-serif;}
+body{margin:16px 0;}
+#builds{padding:0;list-style:none;}
+h2{margin:16px 0 0;padding:0 16px;}
+table{width:100%;border-spacing:0;table-layout:fixed;}
+.parity0{}
+.parity1{background-color:#f0f0f0;}
+td{padding:4px 8px;vertical-align:top;}
+td:first-child{padding-left:16px;width:160px;}
+cite{font-style:normal;color:#c00040;}
+cite .date{font-size:11px;color:#808080;}
+.age{width:96px;}
+.age a{font-family:monospace;}
+td:last-child{padding-right:16px;font-size:11px;}
+strong{display:block;font-weight:normal;color:#404040;white-space:pre;}
+strong:first-line{font-size:13px;color:#000000;}
+.bug-deco::after{font-size:smaller;content:" " attr(data-product) "/" attr(data-component);}
