@@ -109,7 +109,7 @@ Build.findBuilds = function (container) {
 
 Build.getURL = function (url, callback) {
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', proxy(url));
+	xhr.open('GET', url);
 	xhr.responseType = 'text';
 	xhr.addEventListener('load', function () {
 		callback(xhr.response);
