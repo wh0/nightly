@@ -11,9 +11,9 @@ cite{font-style:normal;color:#c00040;}
 cite .date{font-size:11px;color:#808080;}
 .age{width:96px;}
 .age a{font-family:monospace;}
-td:last-child{padding-right:16px;font-size:11px;}
+td:last-child{padding-right:16px;line-height:7px;font-size:11px;}
 strong{display:block;font-weight:normal;color:#404040;white-space:pre;}
-strong:first-line{font-size:13px;color:#000000;}
+strong:first-line{line-height:normal;font-size:13px;color:#000000;}
 .bug-deco::after{font-size:smaller;content:" " attr(data-product) "/" attr(data-component);}
 .no-changes{padding:4px 16px;}
 .no-changes::before{content:"(no changes)";}
