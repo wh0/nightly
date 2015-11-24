@@ -1,10 +1,12 @@
-var FTP_BASE = 'http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/';
-var DIR_RE = /<a href="((\d\d\d\d-\d\d-\d\d-\d\d-\d\d-\d\d)-mozilla-central-android-api-11\/)">/g;
-var SPEC_RE = /<a href="(fennec-.*?\.multi\.android-arm\.txt)">/;
+var NOW = new Date();
+var FTP_DIR = '/' + NOW.getFullYear() + '/' + (NOW.getMonth() + 101).toString().slice(1);
+var FTP_BASE = 'https://ftp.mozilla.org/pub/mobile/nightly' + FTP_DIR + '/';
+var DIR_RE = /((\d\d\d\d-\d\d-\d\d-\d\d-\d\d-\d\d)-mozilla-central-android-api-11\/)">/g;
+var SPEC_RE = /(fennec-.*?\.multi\.android-arm\.txt)">/;
 var CHANGESET_RE = /\/rev\/(\w+)/;
 var CHANGES_RE = /<\/th><\/tr>\r?\n([\w\W]+)\r?\n<\/table>/;
-var HG_LOG = 'http://hg.mozilla.org/mozilla-central/pushloghtml';
-var HG_BASE = 'http://hg.mozilla.org';
+var HG_LOG = 'https://hg.mozilla.org/mozilla-central/pushloghtml';
+var HG_BASE = 'https://hg.mozilla.org';
 var COLLAPSEID_RE = /id(\d+)/;
 var BUGZILLA_RE = /^https:\/\/bugzilla\.mozilla\.org\/show_bug\.cgi\?id=(\d+)$/;
 var BUGZILLA_SEARCH = 'https://api-dev.bugzilla.mozilla.org/latest/bug?include_fields=id,summary,product,component';
@@ -24,7 +26,7 @@ Bugzilla.dest = {};
 
 Bugzilla.queue = [];
 
-Bugzilla.working = false;
+Bugzilla.pending = null;
 
 Bugzilla.request = function (link, id) {
 	if (id in Bugzilla.cache) return Bugzilla.setFields(link, Bugzilla.cache[id]);
@@ -35,43 +37,50 @@ Bugzilla.request = function (link, id) {
 };
 
 Bugzilla.bumpNetwork = function () {
-	if (Bugzilla.working) return;
+	if (Bugzilla.pending) return;
 	if (!Bugzilla.queue.length) return;
-	Bugzilla.working = true;
-	var ids = Bugzilla.queue.splice(0, 100).join(',');
+	Bugzilla.pending = Bugzilla.queue.splice(0, 100);
+	var ids = Bugzilla.pending.join(',');
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', BUGZILLA_SEARCH + '&id=' + ids);
 	xhr.setRequestHeader('Accept', 'text/json');
-	xhr.responseType = 'text';
+	xhr.responseType = 'json';
 	xhr.addEventListener('load', function () {
-		var bugs = JSON.parse(xhr.response).bugs; // lol chrome
-		for (var i = 0; i < bugs.length; i++) {
-			var bug = bugs[i];
-			Bugzilla.receive(bug);
+		var denied = new Set(Bugzilla.pending);
+		var bugs = xhr.response.bugs; // lol ie
+		for (var bug of bugs) {
+			denied.delete(bug.id);
+			Bugzilla.receive(bug.id, bug);
 		}
-		Bugzilla.working = false;
+		for (var id of denied) {
+			Bugzilla.receive(id, null);
+		}
+		Bugzilla.pending = null;
 		Bugzilla.bumpNetwork();
 	});
 	xhr.send(null);
 };
 
-Bugzilla.receive = function (bug) {
-	Bugzilla.cache[bug.id] = bug;
-	if (!(bug.id in Bugzilla.dest)) return;
-	var links = Bugzilla.dest[bug.id];
-	delete Bugzilla.dest[bug.id];
+Bugzilla.receive = function (id, bug) {
+	Bugzilla.cache[id] = bug;
+	if (!(id in Bugzilla.dest)) return;
+	var links = Bugzilla.dest[id];
+	delete Bugzilla.dest[id];
 	if (!links.length) return;
-	for (var i = 0; i < links.length; i++) {
-		var link = links[i];
+	for (var link of links) {
 		Bugzilla.setFields(link, bug);
 	}
 };
 
 Bugzilla.setFields = function (link, bug) {
-	link.className = 'bug-deco';
-	link.title = bug.summary;
-	link.setAttribute('data-product', bug.product); // lol ie
-	link.setAttribute('data-component', bug.component);
+	if (bug) {
+		link.className = 'bug-deco';
+		link.title = bug.summary;
+		link.dataset.product = bug.product;
+		link.dataset.component = bug.component;
+	} else {
+		link.className = 'bug-unknown';
+	}
 };
 
 function Build(dir, date) {
@@ -134,7 +143,7 @@ Build.fixRelativeLink = function (link, href) {
 
 Build.addBugProps = function (link, href) {
 	var m = BUGZILLA_RE.exec(href);
-	if (!m) return;;
+	if (!m) return;
 	var id = m[1];
 	Bugzilla.request(link, id);
 };
@@ -181,7 +190,7 @@ Build.prototype.remove = function () {
 	if (this.prev) this.prev.next = this.next;
 	if (this.next) this.next.prev = this.prev;
 	this.view.parentNode.removeChild(this.view);
-	if (this.prev.changeset && this.next.changeset) this.next.findChanges();
+	if (this.prev && this.prev.changeset && this.next && this.next.changeset) this.next.findChanges();
 };
 
 Build.prototype.load = function () {
