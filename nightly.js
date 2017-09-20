@@ -1,7 +1,7 @@
 var NOW = new Date();
 var FTP_DIR = '/' + NOW.getFullYear() + '/' + (NOW.getMonth() + 101).toString().slice(1);
 var FTP_BASE = 'https://ftp.mozilla.org/pub/mobile/nightly' + FTP_DIR + '/';
-var DIR_RE = /((\d\d\d\d-\d\d-\d\d-\d\d-\d\d-\d\d)-mozilla-central-android-api-15\/)">/g;
+var DIR_RE = /((\d\d\d\d-\d\d-\d\d-\d\d-\d\d-\d\d)-mozilla-central-android-api-16\/)">/g;
 var SPEC_RE = /(fennec-.*?\.multi\.android-arm\.txt)">/;
 var CHANGESET_RE = /\/rev\/(\w+)/;
 var CHANGES_RE = /<\/th><\/tr>\r?\n([\w\W]+)\r?\n<\/table>/;
