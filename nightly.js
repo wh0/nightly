@@ -164,12 +164,12 @@ Build.collapseChangesById = function (id, toggle, changes) {
 	var collapsed = false;
 	toggle.addEventListener('click', function (e) {
 		var text = collapsed ? '[Collapse]' : '[Expand]';
-		var display = collapsed ? '' : 'none';
+		collapsed = !collapsed;
+		var visibility = collapsed ? 'collapse' : '';
 		toggle.textContent = text;
 		for (var i = 0; i < changes.length; i++) {
-			changes[i].style.display = display;
+			changes[i].style.visibility = visibility;
 		}
-		collapsed = !collapsed;
 		e.preventDefault();
 	});
 };
