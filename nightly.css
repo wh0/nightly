@@ -5,6 +5,8 @@ h2{margin:16px 0 0;padding:0 16px;}
 table{width:100%;border-spacing:0;table-layout:fixed;}
 .parity0{}
 .parity1{background-color:#f0f0f0;}
+.parity0.highlight{background-color:#e0f0ff;}
+.parity1.highlight{background-color:#d0e0f0;}
 td{padding:4px 8px;vertical-align:top;}
 td:first-child{padding-left:16px;width:160px;}
 td:nth-child(2){width:84px;}

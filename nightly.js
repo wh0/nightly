@@ -10,6 +10,7 @@ var HG_BASE = 'https://hg.mozilla.org';
 var COLLAPSEID_RE = /id(\d+)/;
 var BUGZILLA_RE = /^https:\/\/bugzilla\.mozilla\.org\/show_bug\.cgi\?id=(\d+)$/;
 var BUGZILLA_SEARCH = 'https://bugzilla.mozilla.org/rest/bug?include_fields=id,summary,product,component';
+var BUGZILLA_PRODUCT_HIGHLIGHT = 'Firefox for Android';
 
 document.addEventListener('DOMContentLoaded', function () {
 	var container = document.createElement('ol');
@@ -78,6 +79,16 @@ Bugzilla.setFields = function (link, bug) {
 		link.title = bug.summary;
 		link.dataset.product = bug.product;
 		link.dataset.component = bug.component;
+		if (bug.product === BUGZILLA_PRODUCT_HIGHLIGHT) {
+			var e = link;
+			while (e) {
+				if (e.tagName === 'TR') {
+					e.classList.add('highlight');
+					break;
+				}
+				e = e.parentElement;
+			}
+		}
 	} else {
 		link.className = 'bug-unknown';
 	}
@@ -155,7 +166,7 @@ Build.collapseHiddenChanges = function (table) {
 		var m = COLLAPSEID_RE.exec(toggle.className);
 		if (!m) continue; // wut
 		var id = m[1];
-		var changes = table.getElementsByClassName('hidden id' + id);
+		var changes = Array.from(table.getElementsByClassName('hidden id' + id));
 		Build.collapseChangesById(id, toggle, changes);
 	}
 };
