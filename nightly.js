@@ -166,7 +166,7 @@ Build.collapseChangesById = function (id, toggle, changes) {
 		var text = collapsed ? '[Collapse]' : '[Expand]';
 		var display = collapsed ? '' : 'none';
 		toggle.textContent = text;
-		for (i = 0; i < changes.length; i++) {
+		for (var i = 0; i < changes.length; i++) {
 			changes[i].style.display = display;
 		}
 		collapsed = !collapsed;
