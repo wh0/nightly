@@ -9,7 +9,7 @@ var HG_LOG = 'https://hg.mozilla.org/mozilla-central/pushloghtml';
 var HG_BASE = 'https://hg.mozilla.org';
 var COLLAPSEID_RE = /id(\d+)/;
 var BUGZILLA_RE = /^https:\/\/bugzilla\.mozilla\.org\/show_bug\.cgi\?id=(\d+)$/;
-var BUGZILLA_SEARCH = 'https://api-dev.bugzilla.mozilla.org/latest/bug?include_fields=id,summary,product,component';
+var BUGZILLA_SEARCH = 'https://bugzilla.mozilla.org/rest/bug?include_fields=id,summary,product,component';
 
 document.addEventListener('DOMContentLoaded', function () {
 	var container = document.createElement('ol');
