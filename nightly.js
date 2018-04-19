@@ -73,24 +73,23 @@ Bugzilla.receive = function (id, bug) {
 	}
 };
 
+Bugzilla.getRow = function (e) {
+	while (e) {
+		if (e.tagName === 'TR') return e;
+		e = e.parentElement;
+	}
+};
+
 Bugzilla.setFields = function (link, bug) {
 	if (bug) {
 		link.className = 'bug-deco';
 		link.title = bug.summary;
 		link.dataset.product = bug.product;
 		link.dataset.component = bug.component;
-		if (bug.product === BUGZILLA_PRODUCT_HIGHLIGHT) {
-			var e = link;
-			while (e) {
-				if (e.tagName === 'TR') {
-					e.classList.add('highlight');
-					break;
-				}
-				e = e.parentElement;
-			}
-		}
+		if (bug.product === BUGZILLA_PRODUCT_HIGHLIGHT) Bugzilla.getRow(link).classList.add('highlight-product');
 	} else {
 		link.className = 'bug-unknown';
+		Bugzilla.getRow(link).classList.add('highlight-unknown');
 	}
 };
 
