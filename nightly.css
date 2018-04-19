@@ -8,7 +8,7 @@ table{width:100%;border-spacing:0;table-layout:fixed;}
 .highlight-product{background-color:#BBDEFB;}
 .highlight-unknown{background-color:#FFCDD2;}
 td{padding:4px 8px;vertical-align:top;}
-td:first-child{padding-left:16px;width:160px;}
+td:first-child{padding-left:16px;width:165px;}
 td:nth-child(2){width:84px;}
 cite{font-style:normal;color:#c00040;}
 cite .date{font-size:11px;color:#808080;}
